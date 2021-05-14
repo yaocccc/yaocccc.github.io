@@ -4,26 +4,27 @@
   
   
   <entry>
-    <title></title>
-    <link href="/2021/05/13/hello-world/"/>
-    <url>/2021/05/13/hello-world/</url>
+    <title>如何使用hexo-githubPage搭建博客</title>
+    <link href="/2021/05/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-githubPage%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"/>
+    <url>/2021/05/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-githubPage%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
     
-    <content type="html"><![CDATA[<h1 id="HELLO-WORLD"><a href="#HELLO-WORLD" class="headerlink" title="HELLO WORLD"></a>HELLO WORLD</h1><h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="/2021/05/13/UOC%E6%96%B9%E6%A1%88%E6%A2%B3%E7%90%86/"/>
-    <url>/2021/05/13/UOC%E6%96%B9%E6%A1%88%E6%A2%B3%E7%90%86/</url>
-    
-    <content type="html"><![CDATA[<h1 id="UOC方案梳理"><a href="#UOC方案梳理" class="headerlink" title="UOC方案梳理"></a>UOC方案梳理</h1><h2 id="基本调用关系图"><a href="#基本调用关系图" class="headerlink" title="基本调用关系图"></a>基本调用关系图</h2><pre><code class=" mermaid">graph TD;    A--&gt;B;    A--&gt;C;    B--&gt;D;    C--&gt;D;</code></pre><h2 id="服务拆分"><a href="#服务拆分" class="headerlink" title="服务拆分"></a>服务拆分</h2><ul><li><p><a href="./UOC_API.md">告警API</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">提供告警API<br>请求拦截<br>生成UUID<br>适配数据<br>将适配后的请求数据塞入Kafka<br></code></pre></td></tr></table></figure></li><li><p><a href="./UOC_ALARM.md">告警服务</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1 接收告警源或适配服务的调用<br>  新增: 清洗 -&gt; 拦截 -&gt; 落地 -&gt; 隔离 -&gt; Kafka<br>  更新: 清洗 -&gt; 落地<br>  恢复: 清晰 -&gt; 落地 -&gt; Kafka<br>2 接收WEB端调用<br>  告警查看<br>  APP管理<br>  拦截规则管理<br>  隔离规则管理<br><br>DB表:<br>  APP信息表<br>  告警信息表<br></code></pre></td></tr></table></figure></li><li><p><a href="./UOC_TASK.md">任务服务</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1 接收告警服务的调用<br>  新增: 聚合收敛 -&gt; 落地 -&gt; 分派 &amp; 调用通知服务<br>  恢复: 落地 -&gt; 调用通知服务<br>  处理: 落地&amp;日志 -&gt; 调用通知服务<br>2 接收WEB端的调用<br>  任务管理<br>  聚合配置管理<br>  分派通知配置管理<br><br>DB表:<br>  任务信息表<br>  任务日志表<br>  任务&amp;告警ref表<br>  任务&amp;处理人ref表<br>  分派通知配置表<br></code></pre></td></tr></table></figure></li><li><p><a href="./UOC_NOTIFY.md">通知服务</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1 接收任务服务的调用<br>2 接收WEB端的调用<br></code></pre></td></tr></table></figure></li><li><p><a href="./UOC_WEBAPI.md">页面后端API</a></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">用户可以访问的页面的后端API<br>仅作为调用方 调用告警、任务服务相关的接口<br>可能会在这一层做一些日志、追踪等 以及请求缓存等逻辑<br></code></pre></td></tr></table></figure></li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="nodejs"><a href="#nodejs" class="headerlink" title="nodejs"></a>nodejs</h3><h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><pre><code class=" mermaid">classDiagram  外部上游 --&gt; 告警API: 调用  告警API ..o 告警服务: Kafka  告警服务 ..o 任务服务: Kafka  告警服务 &lt;--&gt; 任务服务: 读取  通知服务 &lt;-- 任务服务: 调用  告警服务 &lt;.. web端API: 访问  任务服务 &lt;.. web端API: 访问  通知服务 &lt;.. web端API: 访问  class 外部上游 &#123;    +告警源    +调用告警API()  &#125;  class 告警API &#123;    -请求层缓存    -请求拦截()    +请求适配 -&gt; Kafka()  &#125;  class 通知服务 &#123;    +通知配置    +通知日志    +通知API()  &#125;  class 告警服务 &#123;    +APP数据    +告警数据    +告警拦截、隔离    +APPAPI()    +配置API()    -清洗()    -更新告警 -&gt; 落地()    -创建告警 -&gt; 拦截&amp;落地&amp;隔离 -&gt; Kafka()    -恢复告警 -&gt; 落地 -&gt; Kafka()  &#125;  class 任务服务 &#123;    +任务数据    +任务操作日志    +聚合配置    +分派通知配置    +任务处理API()    +任务操作日志API()    +配置API()    -恢复任务 -&gt; 落地()    -创建任务 -&gt; 聚合&amp;落地 -&gt; 派发&amp;通知()    -处理任务 -&gt; 落地&amp;log -&gt; 通知()  &#125;  class web端API &#123;    +访问日志等    +配置管理()    +告警管理()    +任务管理()  &#125;</code></pre>]]></content>
     
     
+    <categories>
+      
+      <category>第一篇</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>tag1</tag>
+      
+      <tag>tag2</tag>
+      
+    </tags>
     
   </entry>
   

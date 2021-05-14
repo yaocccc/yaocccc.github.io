@@ -14,11 +14,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
+  <meta name="description" content="使用Hexo、github白嫖静态页面服务器">
   <meta name="author" content="Yaocan Chen">
   <meta name="keywords" content="">
   
-  <title>cc</title>
+  <title>如何使用hexo-githubPage搭建博客 - cc</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -116,6 +116,18 @@
             </li>
           
         
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
         
           <li class="nav-item" id="search-btn">
             <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
@@ -139,7 +151,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="">
+            <span class="h2" id="subtitle" title="如何使用hexo-githubPage搭建博客">
               
             </span>
 
@@ -149,8 +161,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-05-13 11:13" pubdate>
-        2021年5月13日 上午
+      <time datetime="2021-05-14 13:42" pubdate>
+        2021年5月14日 下午
       </time>
     </span>
   
@@ -161,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      344 字
+      294 字
     </span>
   
 
@@ -201,35 +213,88 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">如何使用hexo-githubPage搭建博客</h1>
             
             <div class="markdown-body">
-              <h1 id="UOC方案梳理"><a href="#UOC方案梳理" class="headerlink" title="UOC方案梳理"></a>UOC方案梳理</h1><h2 id="基本调用关系图"><a href="#基本调用关系图" class="headerlink" title="基本调用关系图"></a>基本调用关系图</h2><pre><code class=" mermaid">graph TD;
-    A--&gt;B;
-    A--&gt;C;
-    B--&gt;D;
-    C--&gt;D;
+              <h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="nodejs"><a href="#nodejs" class="headerlink" title="nodejs"></a>nodejs</h3><h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><pre><code class=" mermaid">classDiagram
+  外部上游 --&gt; 告警API: 调用
+  告警API ..o 告警服务: Kafka
+  告警服务 ..o 任务服务: Kafka
+  告警服务 &lt;--&gt; 任务服务: 读取
+  通知服务 &lt;-- 任务服务: 调用
+  告警服务 &lt;.. web端API: 访问
+  任务服务 &lt;.. web端API: 访问
+  通知服务 &lt;.. web端API: 访问
+  class 外部上游 &#123;
+    +告警源
+    +调用告警API()
+  &#125;
+  class 告警API &#123;
+    -请求层缓存
+    -请求拦截()
+    +请求适配 -&gt; Kafka()
+  &#125;
+  class 通知服务 &#123;
+    +通知配置
+    +通知日志
+    +通知API()
+  &#125;
+  class 告警服务 &#123;
+    +APP数据
+    +告警数据
+    +告警拦截、隔离
 
+    +APPAPI()
+    +配置API()
+
+    -清洗()
+    -更新告警 -&gt; 落地()
+    -创建告警 -&gt; 拦截&amp;落地&amp;隔离 -&gt; Kafka()
+    -恢复告警 -&gt; 落地 -&gt; Kafka()
+  &#125;
+  class 任务服务 &#123;
+    +任务数据
+    +任务操作日志
+    +聚合配置
+    +分派通知配置
+
+    +任务处理API()
+    +任务操作日志API()
+    +配置API()
+
+    -恢复任务 -&gt; 落地()
+    -创建任务 -&gt; 聚合&amp;落地 -&gt; 派发&amp;通知()
+    -处理任务 -&gt; 落地&amp;log -&gt; 通知()
+  &#125;
+  class web端API &#123;
+    +访问日志等
+    +配置管理()
+    +告警管理()
+    +任务管理()
+  &#125;
 </code></pre>
-
-<h2 id="服务拆分"><a href="#服务拆分" class="headerlink" title="服务拆分"></a>服务拆分</h2><ul>
-<li><p><a href="./UOC_API.md">告警API</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">提供告警API<br>请求拦截<br>生成UUID<br>适配数据<br>将适配后的请求数据塞入Kafka<br></code></pre></td></tr></table></figure></li>
-<li><p><a href="./UOC_ALARM.md">告警服务</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1 接收告警源或适配服务的调用<br>  新增: 清洗 -&gt; 拦截 -&gt; 落地 -&gt; 隔离 -&gt; Kafka<br>  更新: 清洗 -&gt; 落地<br>  恢复: 清晰 -&gt; 落地 -&gt; Kafka<br>2 接收WEB端调用<br>  告警查看<br>  APP管理<br>  拦截规则管理<br>  隔离规则管理<br><br>DB表:<br>  APP信息表<br>  告警信息表<br></code></pre></td></tr></table></figure></li>
-<li><p><a href="./UOC_TASK.md">任务服务</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1 接收告警服务的调用<br>  新增: 聚合收敛 -&gt; 落地 -&gt; 分派 &amp; 调用通知服务<br>  恢复: 落地 -&gt; 调用通知服务<br>  处理: 落地&amp;日志 -&gt; 调用通知服务<br>2 接收WEB端的调用<br>  任务管理<br>  聚合配置管理<br>  分派通知配置管理<br><br>DB表:<br>  任务信息表<br>  任务日志表<br>  任务&amp;告警ref表<br>  任务&amp;处理人ref表<br>  分派通知配置表<br></code></pre></td></tr></table></figure></li>
-<li><p><a href="./UOC_NOTIFY.md">通知服务</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1 接收任务服务的调用<br>2 接收WEB端的调用<br></code></pre></td></tr></table></figure></li>
-<li><p><a href="./UOC_WEBAPI.md">页面后端API</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">用户可以访问的页面的后端API<br>仅作为调用方 调用告警、任务服务相关的接口<br>可能会在这一层做一些日志、追踪等 以及请求缓存等逻辑<br></code></pre></td></tr></table></figure></li>
-</ul>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AC%AC%E4%B8%80%E7%AF%87/">第一篇</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/tag1/">tag1</a>
+                    
+                      <a class="hover-with-bg" href="/tags/tag2/">tag2</a>
+                    
+                  </div>
                 
               </div>
               
@@ -237,12 +302,6 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
-                    
-                      <a href="/2021/05/13/hello-world/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
                     
                   </article>
                   <article class="post-next col-6">
@@ -439,6 +498,13 @@
 
 
 
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"neutral"});
+    }
+  </script>
 
 
 
