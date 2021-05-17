@@ -4,25 +4,23 @@
   
   
   <entry>
-    <title>如何使用hexo-githubPage搭建博客</title>
-    <link href="/2021/05/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-githubPage%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"/>
-    <url>/2021/05/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-githubPage%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
+    <title>MYSQL无则插入有则更新</title>
+    <link href="/2021/05/17/MYSQL%E6%97%A0%E5%88%99%E6%8F%92%E5%85%A5%E6%9C%89%E5%88%99%E6%9B%B4%E6%96%B0/"/>
+    <url>/2021/05/17/MYSQL%E6%97%A0%E5%88%99%E6%8F%92%E5%85%A5%E6%9C%89%E5%88%99%E6%9B%B4%E6%96%B0/</url>
     
-    <content type="html"><![CDATA[<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="nodejs"><a href="#nodejs" class="headerlink" title="nodejs"></a>nodejs</h3><h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><pre><code class=" mermaid">classDiagram  外部上游 --&gt; 告警API: 调用  告警API ..o 告警服务: Kafka  告警服务 ..o 任务服务: Kafka  告警服务 &lt;--&gt; 任务服务: 读取  通知服务 &lt;-- 任务服务: 调用  告警服务 &lt;.. web端API: 访问  任务服务 &lt;.. web端API: 访问  通知服务 &lt;.. web端API: 访问  class 外部上游 &#123;    +告警源    +调用告警API()  &#125;  class 告警API &#123;    -请求层缓存    -请求拦截()    +请求适配 -&gt; Kafka()  &#125;  class 通知服务 &#123;    +通知配置    +通知日志    +通知API()  &#125;  class 告警服务 &#123;    +APP数据    +告警数据    +告警拦截、隔离    +APPAPI()    +配置API()    -清洗()    -更新告警 -&gt; 落地()    -创建告警 -&gt; 拦截&amp;落地&amp;隔离 -&gt; Kafka()    -恢复告警 -&gt; 落地 -&gt; Kafka()  &#125;  class 任务服务 &#123;    +任务数据    +任务操作日志    +聚合配置    +分派通知配置    +任务处理API()    +任务操作日志API()    +配置API()    -恢复任务 -&gt; 落地()    -创建任务 -&gt; 聚合&amp;落地 -&gt; 派发&amp;通知()    -处理任务 -&gt; 落地&amp;log -&gt; 通知()  &#125;  class web端API &#123;    +访问日志等    +配置管理()    +告警管理()    +任务管理()  &#125;</code></pre>]]></content>
+    <content type="html"><![CDATA[<h2 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">用一条sql实现<br>数据库中已存在(主键或唯一索引已存在)则更新原来的数据<br>数据库中不存在(主键或唯一索引为新值)则插入一条新数据<br></code></pre></td></tr></table></figure><h2 id="直接上结论"><a href="#直接上结论" class="headerlink" title="直接上结论"></a>直接上结论</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> TABLENAME …… <span class="hljs-keyword">ON</span> DUPLICATE KEY UPDATE ……<br>PS: 该语法为MYSQL特有语法，不是<span class="hljs-keyword">SQL</span>标准语法<br></code></pre></td></tr></table></figure><h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2>]]></content>
     
     
     <categories>
       
-      <category>第一篇</category>
+      <category>MYSQL</category>
       
     </categories>
     
     
     <tags>
       
-      <tag>tag1</tag>
-      
-      <tag>tag2</tag>
+      <tag>MYSQL</tag>
       
     </tags>
     
