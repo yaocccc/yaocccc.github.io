@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      723 字
+      750 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      9
        分钟
     </span>
   
@@ -224,7 +224,18 @@
             <h1 style="display: none">如何利用位运算做逻辑控制</h1>
             
             <div class="markdown-body">
-              <h2 id="位运算符号简介"><a href="#位运算符号简介" class="headerlink" title="位运算符号简介"></a>位运算符号简介</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&amp; 与运算   两者为1时  为1:  0b0010 &amp; 0b0011 = 0b0010<br>| 或运算   一着为1时  为1:  0b0010 &amp; 0b1011 = 0b1011<br>^ 异或运算 两者不同时 为1:  0b0101 &amp; 0b1011 = 0b1110<br>! 取反运算 每位取反      : !0b1010 = 0b0101<br><br>PS:<br>  0b1010为二进制表达<br>  常见的位运算符有: &amp; | ! ^ &lt;&lt; &gt;&gt; 等, 建议花一些时间了解一下<br></code></pre></td></tr></table></figure>
+              <!-- markdown-toc GFM -->
+
+<ul>
+<li><a href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E5%8F%B7%E7%AE%80%E4%BB%8B">位运算符号简介</a></li>
+<li><a href="#%E5%BA%94%E7%94%A8">应用</a></li>
+<li><a href="#%E7%BB%8F%E5%85%B8%E6%A1%88%E4%BE%8B-linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86">经典案例 LINUX文件权限管理</a></li>
+<li><a href="#%E5%9C%A8mysql%E4%B8%AD%E4%BD%BF%E7%94%A8">在MYSQL中使用</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<!-- markdown-toc -->
+
+<h2 id="位运算符号简介"><a href="#位运算符号简介" class="headerlink" title="位运算符号简介"></a>位运算符号简介</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&amp; 与运算   两者为1时  为1:  0b0010 &amp; 0b0011 = 0b0010<br>| 或运算   一着为1时  为1:  0b0010 &amp; 0b1011 = 0b1011<br>^ 异或运算 两者不同时 为1:  0b0101 &amp; 0b1011 = 0b1110<br>! 取反运算 每位取反      : !0b1010 = 0b0101<br><br>PS:<br>  0b1010为二进制表达<br>  常见的位运算符有: &amp; | ! ^ &lt;&lt; &gt;&gt; 等, 建议花一些时间了解一下<br></code></pre></td></tr></table></figure>
 
 <h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">案例1: 如何用 一个字段管理4个权限: 权限1、权限2、权限3、权限4<br><br>解决方案:<br>  用一个二进制数来表达权限 二进制位为1时表示有权限 0无权限<br>  将有权限1定义为 0b0001<br>  将有权限2定义为 0b0010<br>  将有权限3定义为 0b0100<br>  将有权限4定义为 0b1000<br><br>  综上: 若一个用户拥有权限1234, 则表达为 0b1111<br><br>1: 赋权(|: 或运算 两者有1时为1)<br>  role = 0b0010         //用户权限<br>  role = role | 0b0001  //赋予用户权限1 -&gt; role = 0b0011<br>  role = role | 0b1000  //赋予用户权限4 -&gt; role = 0b1011<br><br>2: 去权(^: 异或运算 两者不同时为1)<br>  role = 0b1011         //用户权限<br>  role = role ^ 0b0010  //移去用户权限2 -&gt; role = 0b1001<br>  role = role ^ 0b1000  //移去用户权限4 -&gt; role = 0b0001<br><br>3: 判权(&amp;: 与运算 两者为1时为1)<br>  role = 0b1011         //用户权限<br>  role &amp; 0b0001 &gt; 0     //有权限1<br>  role &amp; 0b0010 &gt; 0     //有权限2<br>  role &amp; 0b0100 = 0     //无权限3<br>  role &amp; 0b1000 &gt; 0     //有权限4<br></code></pre></td></tr></table></figure>
 
