@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.7k 字
+      1.9k 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26
+      28
        分钟
     </span>
   
@@ -266,6 +266,8 @@
 <h3 id="SSH-R-参数做了一个什么事情"><a href="#SSH-R-参数做了一个什么事情" class="headerlink" title="SSH -R 参数做了一个什么事情"></a>SSH -R 参数做了一个什么事情</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">ssh -R HostC:PortC:HostB:PortB  user@HostC<br><br>远端启动端口，把远端端口数据转发到本地。<br><br>HostA 将自己可以访问的 HostB:PortB 暴露给外网服务器 HostC:PortC，在 HostA 上运行：<br></code></pre></td></tr></table></figure>
 
 <h2 id="大致实现调用图"><a href="#大致实现调用图" class="headerlink" title="大致实现调用图"></a>大致实现调用图</h2><p><img src="/img/%E6%9C%AC%E5%9C%B0%E4%B8%8ESSH%E8%BF%9C%E7%A8%8B%E5%90%8C%E6%AD%A5VIM%E5%89%AA%E5%88%87%E6%9D%BF/001.png" srcset="/img/loading.gif" lazyload alt="001"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs subgraph">graph TB<br>  subgraph 服务端-本地<br>    S1[lemonada服务-2489端口]<br>    S2[xclip]<br>    S1 --server调用xclip读取或修改本地的剪切板--&gt; S2<br>  end<br>  subgraph 客户端-远程<br>    subgraph VIM中使用<br>      V1((复制))<br>      V2((粘贴))<br>    end<br>    C1[lemonade bin可执行文件]<br>    V1 --&gt; C1<br>    V2 --&gt; C1<br>  end<br>  subgraph 客户端2-远程<br>    CN[客户端]<br>  end<br>  subgraph 客户端n-远程<br>    CN2[客户端]<br>  end<br>  P1([SSH -R参数转发])<br>  C1 --TCP请求--&gt; P1 --TCP请求--&gt; S1<br>  CN --&gt; P1<br>  CN2 ---&gt; P1<br></code></pre></td></tr></table></figure>
+
 
             </div>
             <hr>
@@ -531,6 +533,13 @@
 
 
 
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"neutral"});
+    }
+  </script>
 
 
 
