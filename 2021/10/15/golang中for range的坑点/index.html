@@ -14,11 +14,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="记录一次arch linux升级的事故 最终以降级部分包版本解决">
+  <meta name="description" content="记录golang中for range的坑点">
   <meta name="author" content="Yaocan Chen">
   <meta name="keywords" content="">
   
-  <title>arch安装指定版本的包--降级操作 - cc</title>
+  <title>golang中for range的坑点 - cc</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -151,7 +151,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="arch安装指定版本的包--降级操作">
+            <span class="h2" id="subtitle" title="golang中for range的坑点">
               
             </span>
 
@@ -161,8 +161,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-10-14 17:56" pubdate>
-        2021年10月14日 下午
+      <time datetime="2021-10-15 16:48" pubdate>
+        2021年10月15日 下午
       </time>
     </span>
   
@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      249 字
+      379 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      5
        分钟
     </span>
   
@@ -221,38 +221,35 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">arch安装指定版本的包--降级操作</h1>
+            <h1 style="display: none">golang中for range的坑点</h1>
             
             <div class="markdown-body">
               <!-- markdown-toc GitLab -->
 
 <ul>
-<li><a href="#arch-linux-%E5%8C%85%E7%89%88%E6%9C%AC%E9%99%8D%E7%BA%A7%E6%93%8D%E4%BD%9C">ARCH LINUX 包版本降级操作</a><ul>
-<li><a href="#pacman-%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E5%8C%85">pacman 安装指定版本包</a><ul>
-<li><a href="#%E4%BB%8E%E7%BC%93%E5%AD%98%E5%8C%85%E4%B8%AD%E5%AE%89%E8%A3%85">从缓存包中安装</a></li>
-<li><a href="#%E4%BB%8E%E4%BB%93%E5%BA%93%E4%B8%AD%E5%AE%89%E8%A3%85">从仓库中安装</a></li>
-</ul>
-</li>
-<li><a href="#yay-%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E5%8C%85">yay 安装指定版本包</a></li>
-<li><a href="#%E5%BF%BD%E7%95%A5%E6%8C%87%E5%AE%9A%E5%8C%85%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0">忽略指定包版本更新</a></li>
-<li><a href="#%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C">实际操作</a></li>
+<li><a href="#golang%E4%B8%ADfor-range%E7%9A%84%E5%9D%91%E7%82%B9">golang中for range的坑点</a><ul>
+<li><a href="#%E9%94%99%E8%AF%AF%E4%BE%8B%E5%AD%90">错误例子</a></li>
+<li><a href="#%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">原因分析</a></li>
+<li><a href="#%E6%AD%A3%E7%A1%AE%E5%A4%84%E7%90%86">正确处理</a></li>
 </ul>
 </li>
 </ul>
 <!-- markdown-toc -->
 
-<h2 id="ARCH-LINUX-包版本降级操作"><a href="#ARCH-LINUX-包版本降级操作" class="headerlink" title="ARCH LINUX 包版本降级操作"></a>ARCH LINUX 包版本降级操作</h2><p>本文分别描述 pacman 和 yay 如何安装历史版本的包</p>
-<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Arch_Linux_Archive#How_to_downgrade_one_package">参考自:Arch_Linux_Archive#How_to_downgrade_one_package</a></p>
-<h3 id="pacman-安装指定版本包"><a href="#pacman-安装指定版本包" class="headerlink" title="pacman 安装指定版本包"></a>pacman 安装指定版本包</h3><h4 id="从缓存包中安装"><a href="#从缓存包中安装" class="headerlink" title="从缓存包中安装"></a>从缓存包中安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">cd /var/cache/pacman/pkg<br>ls | grep pkgname<br>sudo pacman -U packagename-version.pkg.tar.xz<br></code></pre></td></tr></table></figure>
+<h2 id="golang中for-range的坑点"><a href="#golang中for-range的坑点" class="headerlink" title="golang中for range的坑点"></a>golang中for range的坑点</h2><p>GOLANG 可通过 for range 遍历 数组、切片、映射等类型。</p>
+<p>但使用不当时 有时程序运行会不符合预期。</p>
+<h3 id="错误例子"><a href="#错误例子" class="headerlink" title="错误例子"></a>错误例子</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs golang"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    sourceArr := []<span class="hljs-keyword">int</span>&#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;<br>    targetArr := []*<span class="hljs-keyword">int</span>&#123;&#125;<br><br>    <span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> sourceArr &#123;<br>        targetArr = <span class="hljs-built_in">append</span>(targetArr, &amp;num)<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> _, num_p := <span class="hljs-keyword">range</span> targetArr &#123;<br>        fmt.Printf(<span class="hljs-string">&quot;num: %v\n&quot;</span>, *num_p)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h4 id="从仓库中安装"><a href="#从仓库中安装" class="headerlink" title="从仓库中安装"></a>从仓库中安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">到 https://archive.archlinux.org/packages 找到自己对应的包的链接<br>sudo pacman -U https://archive.archlinux.org/packages/.../packagename.pkg.tar.xz<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"># 预期结果为<br>num: 0<br>num: 1<br>num: 2<br>num: 3<br><br># 实际结果为<br>num: 3<br>num: 3<br>num: 3<br>num: 3<br></code></pre></td></tr></table></figure>
 
-<h3 id="yay-安装指定版本包"><a href="#yay-安装指定版本包" class="headerlink" title="yay 安装指定版本包"></a>yay 安装指定版本包</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">cd ~/.cache/yay/pkg<br><br>yay -U pkgname-version.pkg.tar.zst<br></code></pre></td></tr></table></figure>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>进一步分析打印程序如下 打印targetArr如下</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs golang"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    sourceArr := []<span class="hljs-keyword">int</span>&#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;<br>    targetArr := []*<span class="hljs-keyword">int</span>&#123;&#125;<br><br>    <span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> sourceArr &#123;<br>        fmt.Printf(<span class="hljs-string">&quot;&amp;num: %+v\n&quot;</span>, &amp;num)<br>        targetArr = <span class="hljs-built_in">append</span>(targetArr, &amp;num)<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> _, num_p := <span class="hljs-keyword">range</span> targetArr &#123;<br>        fmt.Printf(<span class="hljs-string">&quot;num: %v\n&quot;</span>, *num_p)<br>    &#125;<br>    fmt.Printf(<span class="hljs-string">&quot;targetArr: %v\n&quot;</span>, targetArr)<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="忽略指定包版本更新"><a href="#忽略指定包版本更新" class="headerlink" title="忽略指定包版本更新"></a>忽略指定包版本更新</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">vim /etc/pacman.conf<br><br>在 [options] 下添加<br>IgnorePkg = pkg1 pkg2 ...<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"># 结果如下<br>&amp;num: 0xc00018c000<br>&amp;num: 0xc00018c000<br>&amp;num: 0xc00018c000<br>&amp;num: 0xc00018c000<br>num: 3<br>num: 3<br>num: 3<br>num: 3<br>targetArr: [0xc00018c000 0xc00018c000 0xc00018c000 0xc00018c000]<br><br>可见 range 的第二返回值 始终指向同一个地址<br>导致 *num_p 取得的都是 sourceArr 的最后一项<br><br>!!! 一旦在for range中 使用了 第二返回值 &amp; 取值赋值时，都要谨慎处理<br></code></pre></td></tr></table></figure>
 
-<h3 id="实际操作"><a href="#实际操作" class="headerlink" title="实际操作"></a>实际操作</h3><p>本次遭遇bluez版本更新后发生错误 进行了bluez版本降级操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /var/cache/pacman/pkg<br>sudo pacman -U $( ls |grep bluez | grep 5.61 | grep -v sig)<br><br>vim /etc/pacman.conf<br><br>[options]<br>IgnorePkg = bluez bluez-cups bluez-hid2hci bluez-libs bluez-plugins bluez-utils<br></code></pre></td></tr></table></figure>
+<h3 id="正确处理"><a href="#正确处理" class="headerlink" title="正确处理"></a>正确处理</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs golang"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    sourceArr := []<span class="hljs-keyword">int</span>&#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;<br>    targetArr := []*<span class="hljs-keyword">int</span>&#123;&#125;<br><br>    <span class="hljs-keyword">for</span> idx := <span class="hljs-keyword">range</span> sourceArr &#123;<br>        targetArr = <span class="hljs-built_in">append</span>(targetArr, &amp;sourceArr[idx])<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> _, num_p := <span class="hljs-keyword">range</span> targetArr &#123;<br>        fmt.Printf(<span class="hljs-string">&quot;num: %v\n&quot;</span>, *num_p)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当存在指针传递时，尽量使用index作为赋值依据，上述程序 符合预期</p>
 
             </div>
             <hr>
@@ -262,7 +259,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/LINUX/">LINUX</a>
+                      <a class="hover-with-bg" href="/categories/GOLANG/">GOLANG</a>
                     
                   </div>
                 
@@ -270,7 +267,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/LINUX/">LINUX</a>
+                      <a class="hover-with-bg" href="/tags/GOLANG/">GOLANG</a>
                     
                   </div>
                 
@@ -287,18 +284,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/10/15/golang%E4%B8%ADfor%20range%E7%9A%84%E5%9D%91%E7%82%B9/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">golang中for range的坑点</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/09/27/%E4%B9%9F%E8%AE%B8%E6%98%AF%E6%9C%80%E4%BE%BF%E6%8D%B7%E7%9A%84SS%E5%AE%A2%E6%88%B7%E7%AB%AF/">
-                        <span class="hidden-mobile">也许是最便捷的SS客户端</span>
+                      <a href="/2021/10/14/arch%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84%E5%8C%85--%E9%99%8D%E7%BA%A7%E6%93%8D%E4%BD%9C/">
+                        <span class="hidden-mobile">arch安装指定版本的包--降级操作</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
