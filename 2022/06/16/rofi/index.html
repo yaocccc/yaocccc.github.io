@@ -14,11 +14,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="写一个可以用键盘上下左右控制的 带菜单选择的脚本">
+  <meta name="description" content="rofi实现自定义菜单选项和操作、像fzf一样使用rofi">
   <meta name="author" content="Yaocan Chen">
   <meta name="keywords" content="">
   
-  <title>写一个可以键盘控制的shell脚本 - cc</title>
+  <title>rofi骚操作 - cc</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -151,7 +151,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="写一个可以键盘控制的shell脚本">
+            <span class="h2" id="subtitle" title="rofi骚操作">
               
             </span>
 
@@ -161,8 +161,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-10-19 18:47" pubdate>
-        2021年10月19日 晚上
+      <time datetime="2022-06-16 14:11" pubdate>
+        2022年6月16日 下午
       </time>
     </span>
   
@@ -173,7 +173,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      886 字
+      481 字
     </span>
   
 
@@ -183,7 +183,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      7
        分钟
     </span>
   
@@ -221,38 +221,40 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">写一个可以键盘控制的shell脚本</h1>
+            <h1 style="display: none">rofi骚操作</h1>
             
             <div class="markdown-body">
               <!-- markdown-toc GitLab -->
 
 <ul>
-<li><a href="#%E5%86%99%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E9%94%AE%E7%9B%98%E6%8E%A7%E5%88%B6%E7%9A%84shell%E8%84%9A%E6%9C%AC">写一个可以键盘控制的shell脚本</a><ul>
-<li><a href="#menu%E8%84%9A%E6%9C%AC">MENU脚本</a><ul>
-<li><a href="#menu%E8%84%9A%E6%9C%AC%E8%AE%B2%E8%A7%A3">MENU脚本讲解</a></li>
-</ul>
-</li>
-<li><a href="#demo%E8%84%9A%E6%9C%AC">DEMO脚本</a></li>
-<li><a href="#%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA">效果展示</a></li>
-<li><a href="#%E4%B8%80%E4%BA%9B%E7%A4%BA%E8%8C%83%E8%84%9A%E6%9C%AC">一些示范脚本</a></li>
-</ul>
-</li>
+<li><a href="#rofi">ROFI</a></li>
+<li><a href="#%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E8%84%9A%E6%9C%AC%E5%AE%9E%E7%8E%B0-rofi%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%92%8C%E9%80%89%E9%A1%B9">用自定义脚本实现 rofi自定义菜单和选项</a></li>
+<li><a href="#rofi-dmenu%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8">rofi dmenu模式的使用</a></li>
+<li><a href="#%E8%87%AA%E7%94%A8%E7%9A%84rofi%E4%B8%BB%E9%A2%98">自用的rofi主题</a></li>
 </ul>
 <!-- markdown-toc -->
 
-<h2 id="写一个可以键盘控制的shell脚本"><a href="#写一个可以键盘控制的shell脚本" class="headerlink" title="写一个可以键盘控制的shell脚本"></a>写一个可以键盘控制的shell脚本</h2><h3 id="MENU脚本"><a href="#MENU脚本" class="headerlink" title="MENU脚本"></a>MENU脚本</h3><p><a href="/file/menu">menu脚本文件 可以直接保存到本地</a></p>
-<p>若无法下载 则手动编辑本文文件</p>
-<p>!!!PS!!!<br>menu()中的 ^C ^M ^[ 分别代表ctrl+c 回车 esc 且不能直接用字符形式输入<br>输入方法为<br>在vim或vi插入模式中(ctrl+v会触发源字符输入模式)<br>^C: ctrl-v ctrl-c<br>^M: ctrl-v enter<br>^[: ctrl-v esc</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> menu</span><br>key=&#x27;&#x27;<br>_echo_green() &#123; echo -e &quot;\033[32m$1\033[0m&quot;; &#125;<br>_get_char() &#123; SAVEDSTTY=`stty -g`; stty -echo; stty raw; dd if=/dev/tty bs=1 count=1 2&gt; /dev/null; stty -raw; stty echo; stty $SAVEDSTTY; &#125;<br>_list() &#123;<br>    text=&#x27;&#x27;<br>    for tab in $&#123;menu_tabs[@]&#125;; do<br>        test $&#123;tab&#125; = $&#123;menu_tabs[$tab_index]&#125; &amp;&amp; text=$text&#x27; \033[32m&#x27;$tab&#x27;\033[0m&#x27;  || text=$text&#x27; &#x27;$tab<br>    done<br>    echo -e $text<br><br>    for item in $&#123;menu_items[@]&#125;; do<br>        test $&#123;item&#125; = $&#123;menu_items[$item_index]&#125; &amp;&amp; _echo_green &quot; &gt; $&#123;item&#125;&quot; || echo &quot;   $&#123;item&#125;&quot;<br>    done<br>&#125;<br>_key() &#123;<br>    # 计算新的tab_index<br>    tab_index=$(($tab_index+$1))<br>    len=$&#123;#menu_tabs[*]&#125;<br>    test $tab_index -lt 0 &amp;&amp; tab_index=$((len - 1))<br>    test $tab_index -gt $((len - 1)) &amp;&amp; tab_index=0<br><br>    # 计算新的item_index<br>    item_index=$(($item_index+$2))<br>    len=$&#123;#menu_items[*]&#125;<br>    test $item_index -lt 0 &amp;&amp; item_index=$((len - 1))<br>    test $item_index -gt $((len - 1)) &amp;&amp; item_index=0<br><br>    clear<br><br>    pre_hook<br>    _list<br>    after_hook<br>&#125;<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">##############################################</span></span><br><br>function pre_hook() &#123; :; &#125;<br>function after_hook() &#123; :; &#125;<br>menu_tabs=()<br>menu_items=()<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 调用menu方法展开菜单</span><br><span class="hljs-meta">#</span><span class="bash"> 上下左右移动tab或item，回车选中 q Q ctrl-c 退出脚本</span><br>menu() &#123;<br>    _key 0 0<br>    while :; do<br>        key=`_get_char`<br>        case &quot;$key&quot; in<br>            &#x27;q&#x27;|&#x27;Q&#x27;|&#x27;^C&#x27;) exit 1 ;;<br>            &#x27;^M&#x27;) break ;;<br>            &#x27;^[&#x27;)<br>                secondchar=`_get_char`<br>                thirdchar=`_get_char`<br>                case &quot;$thirdchar&quot; in<br>                    A) _key 0 -1 ;;<br>                    B) _key 0 1 ;;<br>                    D) _key -1 0 ;;<br>                    C) _key 1 0 ;;<br>                esac ;;<br>        esac<br>    done<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="ROFI"><a href="#ROFI" class="headerlink" title="ROFI"></a>ROFI</h2><p>rofi–一个窗口切换器、应用启动器、dmenu的替代品</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/davatorium/rofi#modes">git仓库</a></p>
+<p>可观看bilibili视频 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ag411Q7Po/">BV1ag411Q7Po</a></p>
+<h2 id="用自定义脚本实现-rofi自定义菜单和选项"><a href="#用自定义脚本实现-rofi自定义菜单和选项" class="headerlink" title="用自定义脚本实现 rofi自定义菜单和选项"></a>用自定义脚本实现 rofi自定义菜单和选项</h2><p>自己自定义菜单项 和 选中后的操作</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/davatorium/rofi/blob/next/doc/rofi-script.5.markdown">自定义脚本</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">rofi -show 自定义 -modi &quot;自定义:~/rofi.sh&quot;<br>  1: 上述命令可调用rofi.sh作为自定义脚本<br>  2: 将打印的内容作为rofi的选项<br>  3: 每次选中后 会用选中项作为入参再次调用脚本<br>  4: 当没有输出时 整个过程结束<br></code></pre></td></tr></table></figure>
 
-<h4 id="MENU脚本讲解"><a href="#MENU脚本讲解" class="headerlink" title="MENU脚本讲解"></a>MENU脚本讲解</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"># 用到的依赖func，这些不允许用户自定义或主动调用<br>_echo_green(): 用于打印绿色文本<br>_get_char(): 用于从键盘获取操作<br>_list(): 渲染菜单<br>_key(): 计算新的tab_index、item_index并渲染菜单的func<br><br># 用户可自定义的变量和func<br>menu_tabs: 用于自定义tab项 列表 例如 (1 2 3 4)<br>menu_items: 用于自定义当前的item项 列表 例如 (&#x27;item1&#x27; &#x27;item2&#x27; &#x27;item3&#x27;)<br>pre_hook(): 发生在渲染菜单前的钩子方法(此时新的tab_index、item_index已计算完成)<br>after_hook(): 发生在渲染菜单后的钩子方法<br><br># 用户可使用的变量和func<br>tab_index: 当前的tab索引号 从0开始<br>item_index: 当前的item索引号 从0开始<br>menu(): 进入菜单选择状态的入口func<br></code></pre></td></tr></table></figure>
+<p>demo脚本:</p>
+<p>编辑~/rofi.sh 以下内容并chmod +x rofi.sh</p>
+<p>终端执行 <code>rofi -show powermenu -modi &quot;powermenu:~/rofi.sh&quot;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">case &quot;$*&quot; in<br>    &quot;poweroff&quot;) <br>        notify-send &quot;Shutting down&quot;<br>        echo yes<br>        echo no<br>        ;;<br>    &quot;reboot&quot;)<br>        notify-send &quot;reboot&quot;<br>        ;;<br>    &quot;lock&quot;)<br>        notify-send &quot;lock&quot;<br>        ;;<br><br>    &quot;yes&quot;)<br>        notify-send &quot;已触发关机&quot;<br>        ;;<br>    &quot;&quot;)<br>        echo poweroff<br>        echo reboot<br>        echo lock<br>        ;;<br>esac<br></code></pre></td></tr></table></figure>
 
-<h3 id="DEMO脚本"><a href="#DEMO脚本" class="headerlink" title="DEMO脚本"></a>DEMO脚本</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell">source ./menu<br>menu_tabs=(&#x27;tab1&#x27; &#x27;tab2&#x27; &#x27;tab3&#x27;)<br>menu_items=(&#x27;item1&#x27; &#x27;item2&#x27; &#x27;item3&#x27;)<br>pre_hook() &#123;<br>    echo &#x27;请选择tab or item:&#x27;<br>&#125;<br>after_hook() &#123;<br>    echo &#x27;当前选中项为:&#x27; $&#123;menu_tabs[$tab_index]&#125; $&#123;menu_items[$item_index]&#125;<br>&#125;<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 调用 func: menu 开始菜单 [上下左右移动] [回车选中] [q或esc或ctrl c结束]</span><br>menu<br>echo 结束了<br>echo 最终选中的项为: $&#123;menu_tabs[$tab_index]&#125; $&#123;menu_items[$item_index]&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="rofi-dmenu模式的使用"><a href="#rofi-dmenu模式的使用" class="headerlink" title="rofi dmenu模式的使用"></a>rofi dmenu模式的使用</h2><p><a target="_blank" rel="noopener" href="https://github.com/davatorium/rofi/blob/next/doc/rofi-dmenu.5.markdown">dmenu</a></p>
+<p>demo</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">file=$(ls | rofi -dmenu -window-title find)<br>echo $file<br></code></pre></td></tr></table></figure>
 
-<h3 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h3><p><img src="/img/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E9%94%AE%E7%9B%98%E6%8E%A7%E5%88%B6%E7%9A%84shell%E8%84%9A%E6%9C%AC/001.gif" srcset="/img/loading.gif" lazyload alt="show"></p>
-<h3 id="一些示范脚本"><a href="#一些示范脚本" class="headerlink" title="一些示范脚本"></a>一些示范脚本</h3><p>快速连接远程服务器  </p>
-<p>./ssh.sh ls 开始菜单选择对应命令执行<br>./ssh.sh *非ls 直接执行 ssh *</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><br>source ./menu<br><br>menu_items=(&quot;跳板机&quot; &quot;腾讯云&quot; &quot;跳板机2&quot; &quot;跳板机win&quot; &quot;翻墙机&quot; &quot;公网机&quot;)<br><br>cmds[0]=&#x27;ssh **@a.b.com&#x27;<br>cmds[1]=&#x27;ssh root@host1&#x27;<br>cmds[2]=&#x27;sshpass -p ****** ssh **@jms.hwwt2.com -p 2223&#x27;<br>cmds[3]=&#x27;rdesktop -u ******** -p ****** ip:3390 -r sound:off -g 1920x1080&#x27;<br>cmds[4]=&#x27;ssh root@host2&#x27;<br>cmds[5]=&#x27;ssh root@255.255.255.251&#x27;<br><br>after_hook() &#123;<br>    echo<br>    echo &#x27;   &#x27;$&#123;cmds[$item_index]&#125;<br>&#125;<br><br>case $1 in<br>    ls)<br>        menu<br>        echo 连接$&#123;menu_items[$item_index]&#125;<br>        exec $&#123;cmds[$item_index]&#125;<br>        ;;<br>    *) ssh $*;;<br>esac<br></code></pre></td></tr></table></figure>
+<h2 id="自用的rofi主题"><a href="#自用的rofi主题" class="headerlink" title="自用的rofi主题"></a>自用的rofi主题</h2><p>config.rasi</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">configuration &#123;<br>    theme: &quot;mine.rasi&quot;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>mine.rasi</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">configuration &#123;<br>  display-drun: &quot;&quot;;<br>  display-window: &quot;&quot;;<br>  display-windowcd: &quot;&quot;;<br>  display-ssh: &quot;&quot;;<br>  display-run: &quot;﮸&quot;;<br>  show-icons: false;<br>  drun-display-format: &quot;&#123;icon&#125; &#123;name&#125; &#123;comment&#125;&quot;;<br>&#125;<br><br>* &#123;<br>  font: &quot;JetBrainsMono Nerd Font Mono 12.5&quot;;<br>  background-color: transparent;<br>  text-color: #f1f1f1;<br>  width: 680px;<br>  height: 300px;<br>  location: 0;<br>  spacing: 0;<br>  transparent: rgba(34,62,79,0.80);<br>&#125;<br><br>window &#123;<br>    location: center;<br>    anchor:   center;<br><br>    background-color:@transparent;<br>    spacing: 0;<br>    children:  [mainbox];<br>    orientation: horizontal;<br>&#125;<br><br>inputbar &#123;<br>  border: 0 0 1px 0;<br>  children: [prompt,entry];<br>&#125;<br><br>prompt &#123;<br>  padding: 0px 13px 0px 13px;<br>  border: 0 1px 0 0;<br>  vertical-align: 0.5;<br>&#125;<br><br>textbox &#123;<br>  background-color:@transparent;<br>  border: 0 0 1px 0;<br>  border-color: #161B1A;<br>  padding: 8px 13px;<br><br>&#125;<br><br>entry &#123;<br>  padding: 13px;<br>&#125;<br><br>listview &#123;<br>  cycle: false;<br>  margin: 0 0 -1px 0;<br>  scrollbar: false;<br>&#125;<br><br>element &#123;<br>  border: 0 0 1px 0;<br>  padding: 4px;<br>&#125;<br><br>element-text &#123;<br>  expand: true;<br>  vertical-align: 0.5;<br>  padding: 0px 13px;<br>&#125;<br><br>element selected &#123;<br>  background-color: rgba(34,82,99);<br>&#125;<br><br>element-icon &#123;<br>    size: 30px;<br>    border: 0px;<br>&#125;<br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
@@ -262,7 +264,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/LINUX/">LINUX</a>
+                      <a class="hover-with-bg" href="/categories/LINUX-DWM-ROFI/">LINUX DWM ROFI</a>
                     
                   </div>
                 
@@ -270,9 +272,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/LINUX/">LINUX</a>
-                    
-                      <a class="hover-with-bg" href="/tags/SHELL/">SHELL</a>
+                      <a class="hover-with-bg" href="/tags/LINUX-DWM-ROFI/">LINUX DWM ROFI</a>
                     
                   </div>
                 
@@ -289,18 +289,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/06/16/rofi/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">rofi骚操作</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/10/15/golang%E4%B8%ADfor%20range%E7%9A%84%E5%9D%91%E7%82%B9/">
-                        <span class="hidden-mobile">golang中for range的坑点</span>
+                      <a href="/2021/10/19/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E9%94%AE%E7%9B%98%E6%8E%A7%E5%88%B6%E7%9A%84shell%E8%84%9A%E6%9C%AC/">
+                        <span class="hidden-mobile">写一个可以键盘控制的shell脚本</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
