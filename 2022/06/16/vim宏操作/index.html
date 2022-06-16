@@ -14,11 +14,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="rofi实现自定义菜单选项和操作、像fzf一样使用rofi">
+  <meta name="description" content="使用宏简化重复操作">
   <meta name="author" content="Yaocan Chen">
   <meta name="keywords" content="">
   
-  <title>rofi实现自定义菜单选项和操作、像fzf一样使用rofi - cc</title>
+  <title>vim宏操作 - cc</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -139,7 +139,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="rofi实现自定义菜单选项和操作、像fzf一样使用rofi">
+            <span class="h2" id="subtitle" title="vim宏操作">
               
             </span>
 
@@ -149,8 +149,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-06-16 14:11" pubdate>
-        2022年6月16日 下午
+      <time datetime="2022-06-16 20:56" pubdate>
+        2022年6月16日 晚上
       </time>
     </span>
   
@@ -161,7 +161,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      481 字
+      902 字
     </span>
   
 
@@ -171,7 +171,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      10
        分钟
     </span>
   
@@ -209,40 +209,64 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">rofi实现自定义菜单选项和操作、像fzf一样使用rofi</h1>
+            <h1 style="display: none">vim宏操作</h1>
             
             <div class="markdown-body">
               <!-- markdown-toc GitLab -->
 
 <ul>
-<li><a href="#rofi">ROFI</a></li>
-<li><a href="#%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E8%84%9A%E6%9C%AC%E5%AE%9E%E7%8E%B0-rofi%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%92%8C%E9%80%89%E9%A1%B9">用自定义脚本实现 rofi自定义菜单和选项</a></li>
-<li><a href="#rofi-dmenu%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8">rofi dmenu模式的使用</a></li>
-<li><a href="#%E8%87%AA%E7%94%A8%E7%9A%84rofi%E4%B8%BB%E9%A2%98">自用的rofi主题</a></li>
+<li><a href="#vim%E5%AE%8F%E6%93%8D%E4%BD%9C">vim宏操作</a></li>
+<li><a href="#%E5%BC%80%E5%A7%8B%E5%BD%95%E5%88%B6%E5%AE%8F">开始录制宏</a></li>
+<li><a href="#%E7%BB%93%E6%9D%9F%E5%BD%95%E5%88%B6%E5%AE%8F">结束录制宏</a></li>
+<li><a href="#%E8%B0%83%E7%94%A8%E5%BD%95%E5%88%B6%E5%AE%8C%E6%88%90%E7%9A%84%E5%AE%8F">调用录制完成的宏</a></li>
+<li><a href="#demo">DEMO</a></li>
+<li><a href="#gif%E6%BC%94%E7%A4%BA">GIF演示</a></li>
 </ul>
 <!-- markdown-toc -->
 
-<h2 id="ROFI"><a href="#ROFI" class="headerlink" title="ROFI"></a>ROFI</h2><p>rofi–一个窗口切换器、应用启动器、dmenu的替代品</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/davatorium/rofi#modes">git仓库</a></p>
-<p>可观看bilibili视频 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ag411Q7Po/">BV1ag411Q7Po</a></p>
-<h2 id="用自定义脚本实现-rofi自定义菜单和选项"><a href="#用自定义脚本实现-rofi自定义菜单和选项" class="headerlink" title="用自定义脚本实现 rofi自定义菜单和选项"></a>用自定义脚本实现 rofi自定义菜单和选项</h2><p>自己自定义菜单项 和 选中后的操作</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/davatorium/rofi/blob/next/doc/rofi-script.5.markdown">自定义脚本</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">rofi -show 自定义 -modi &quot;自定义:~/rofi.sh&quot;<br>  1: 上述命令可调用rofi.sh作为自定义脚本<br>  2: 将打印的内容作为rofi的选项<br>  3: 每次选中后 会用选中项作为入参再次调用脚本<br>  4: 当没有输出时 整个过程结束<br></code></pre></td></tr></table></figure>
+<h2 id="vim宏操作"><a href="#vim宏操作" class="headerlink" title="vim宏操作"></a>vim宏操作</h2><blockquote>
+<p><strong>建议看完本文的相关文字说明后 仔细看一下文末的demo和gif演示图</strong>  </p>
+</blockquote>
+<p>宏操作是vim中一个可以 录制并调用 按键组合的一个操作<br>可有效的减少重复操作  </p>
+<p>可通过 <code>:h q</code> 查看帮助手册</p>
+<p>宏 - 重复组合操作 - complex-repeat</p>
+<h2 id="开始录制宏"><a href="#开始录制宏" class="headerlink" title="开始录制宏"></a>开始录制宏</h2><p>帮助:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">q&#123;0-9a-zA-Z&quot;&#125;	在寄存器 &#123;0-9a-zA-Z&quot;&#125; 里记录键入的字符 (大写名字的寄存<br>                器表示附加键入的内容)。&#x27;q&#x27; 命令不能在执行寄存器时使<br>                用。同样，在映射和 |:normal| 里也不能。<br><br>                注意: 如果用作记录的寄存器用于 y 和 p，其结果多数不如<br>                你的预想，因为 p 会粘贴记录的宏，而 y 会覆盖记录的宏。<br></code></pre></td></tr></table></figure>
 
-<p>demo脚本:</p>
-<p>编辑~/rofi.sh 以下内容并chmod +x rofi.sh</p>
-<p>终端执行 <code>rofi -show powermenu -modi &quot;powermenu:~/rofi.sh&quot;</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">case &quot;$*&quot; in<br>    &quot;poweroff&quot;) <br>        notify-send &quot;Shutting down&quot;<br>        echo yes<br>        echo no<br>        ;;<br>    &quot;reboot&quot;)<br>        notify-send &quot;reboot&quot;<br>        ;;<br>    &quot;lock&quot;)<br>        notify-send &quot;lock&quot;<br>        ;;<br><br>    &quot;yes&quot;)<br>        notify-send &quot;已触发关机&quot;<br>        ;;<br>    &quot;&quot;)<br>        echo poweroff<br>        echo reboot<br>        echo lock<br>        ;;<br>esac<br></code></pre></td></tr></table></figure>
+<p>在<strong>normal</strong>模式下，使用 q+指定寄存器开始录制宏, 只选的寄存器有 数字和大小写字母寄存器</p>
+<p>例如 <code>qai12345&lt;cr&gt;&lt;esc&gt;</code> 即指定寄存器a，录制了动作 <code>进入插入模式 插入12345 回车换行 退出插入模式</code> 的宏操作</p>
+<h2 id="结束录制宏"><a href="#结束录制宏" class="headerlink" title="结束录制宏"></a>结束录制宏</h2><p>帮助:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">q			停止记录。(注意 实现细节: 停止记录的 &#x27;q&#x27; 不会被保存在<br>			寄存器里，除非它是映射的结果)<br></code></pre></td></tr></table></figure>
 
-<h2 id="rofi-dmenu模式的使用"><a href="#rofi-dmenu模式的使用" class="headerlink" title="rofi dmenu模式的使用"></a>rofi dmenu模式的使用</h2><p><a target="_blank" rel="noopener" href="https://github.com/davatorium/rofi/blob/next/doc/rofi-dmenu.5.markdown">dmenu</a></p>
-<p>demo</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">file=$(ls | rofi -dmenu -window-title find)<br>echo $file<br></code></pre></td></tr></table></figure>
+<p>在vim录制宏的过程下，<strong>normal</strong>模式下使用q结束录制</p>
+<p>接上 #开始录制宏 这部分的操作 开始录制到结束录制的完整键入为 <code>qai12345&lt;cr&gt;&lt;esc&gt;q</code></p>
+<h2 id="调用录制完成的宏"><a href="#调用录制完成的宏" class="headerlink" title="调用录制完成的宏"></a>调用录制完成的宏</h2><p>帮助:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">@&#123;0-9a-z&quot;.=*+&#125;		执行寄存器 &#123;0-9a-z&quot;.=*+&#125; 的内容 [count] 次。 注意 不能<br>                    用寄存器 &#x27;%&#x27; (当前文件名) 和 &#x27;#&#x27; (轮换文件名)。<br>                    寄存器的执行方式与映射类同，也就是说，&#x27;wildchar&#x27; 和<br>                    &#x27;wildcharm&#x27; 的差异适用此处，而撤销的同步可能有所不同。<br>                    &quot;@=&quot; 则会提示你输入一个表达式。这个表达式的结果会被执<br>                    行。<br></code></pre></td></tr></table></figure>
 
-<h2 id="自用的rofi主题"><a href="#自用的rofi主题" class="headerlink" title="自用的rofi主题"></a>自用的rofi主题</h2><p>config.rasi</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">configuration &#123;<br>    theme: &quot;mine.rasi&quot;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在<strong>normal</strong>模式下，使用 @+指定寄存器名称 调用对应寄存器上的宏。</p>
+<p>例如本文前面于a寄存器上录制了宏 调用时只需要 @a 即可</p>
+<p>PS: 特殊的调用形式 @@可调用最近调用过的宏 即@a后，可用@@调用a寄存器的宏</p>
+<h2 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h2><p>例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"># 现有一个如下文档 需要将其由左侧的置为右侧的结果<br><br>string aa = &quot;&quot;            string skey1 = &quot;&quot;;<br>string bbb = &quot;&quot;           string skey2 = &quot;&quot;;<br>double cccc = 10.0   =&gt;   int ikey3 = 100;<br>float eee = 1.0           float fkey5 = 1.0;<br>float ffff = 1.0          float fkey6 = 1.0;<br><br>key0<br>string key1 = &quot;&quot;;<br>string key2 = &quot;&quot;;<br>double key3 = 10.0;<br>float key4 = 1.0;<br>float key5 = 1.0;<br><br>需要做的改动共有两处 1: 将key重命名为key12345, 2: 为每行行尾添加上 ; 符号<br></code></pre></td></tr></table></figure>
 
-<p>mine.rasi</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">configuration &#123;<br>  display-drun: &quot;&quot;;<br>  display-window: &quot;&quot;;<br>  display-windowcd: &quot;&quot;;<br>  display-ssh: &quot;&quot;;<br>  display-run: &quot;﮸&quot;;<br>  show-icons: false;<br>  drun-display-format: &quot;&#123;icon&#125; &#123;name&#125; &#123;comment&#125;&quot;;<br>&#125;<br><br>* &#123;<br>  font: &quot;JetBrainsMono Nerd Font Mono 12.5&quot;;<br>  background-color: transparent;<br>  text-color: #f1f1f1;<br>  width: 680px;<br>  height: 300px;<br>  location: 0;<br>  spacing: 0;<br>  transparent: rgba(34,62,79,0.80);<br>&#125;<br><br>window &#123;<br>    location: center;<br>    anchor:   center;<br><br>    background-color:@transparent;<br>    spacing: 0;<br>    children:  [mainbox];<br>    orientation: horizontal;<br>&#125;<br><br>inputbar &#123;<br>  border: 0 0 1px 0;<br>  children: [prompt,entry];<br>&#125;<br><br>prompt &#123;<br>  padding: 0px 13px 0px 13px;<br>  border: 0 1px 0 0;<br>  vertical-align: 0.5;<br>&#125;<br><br>textbox &#123;<br>  background-color:@transparent;<br>  border: 0 0 1px 0;<br>  border-color: #161B1A;<br>  padding: 8px 13px;<br><br>&#125;<br><br>entry &#123;<br>  padding: 13px;<br>&#125;<br><br>listview &#123;<br>  cycle: false;<br>  margin: 0 0 -1px 0;<br>  scrollbar: false;<br>&#125;<br><br>element &#123;<br>  border: 0 0 1px 0;<br>  padding: 4px;<br>&#125;<br><br>element-text &#123;<br>  expand: true;<br>  vertical-align: 0.5;<br>  padding: 0px 13px;<br>&#125;<br><br>element selected &#123;<br>  background-color: rgba(34,82,99);<br>&#125;<br><br>element-icon &#123;<br>    size: 30px;<br>    border: 0px;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>实现(其实位置在第一行 第一列):  </p>
+<ol>
+<li>先复制一个 <code>key0</code></li>
+<li>录制一个宏 <code>qq w viwp &lt;ctrl+a&gt; yiw A; &lt;esc&gt;j^ q</code><ol>
+<li>qq 指定q寄存器开始录制宏</li>
+<li>w  跳转到下一个单词开头 即跳到aa处</li>
+<li>viwp 选中 <code>aa</code> 并且用p将 <code>aa</code> 替换为 <code>key0</code></li>
+<li>&lt;ctrl+a&gt; 将 <code>key0</code> 自增为 <code>key1</code></li>
+<li>yiw 将 <code>key1</code> 复制到剪切板</li>
+<li>A; 跳到行尾插入;</li>
+<li><esc>j^ 退出插入模式并到下一行且回到行首</li>
+<li>q 结束本次录制</li>
+</ol>
+</li>
+<li>调用4次宏 <code>4@q</code></li>
+</ol>
+<p>实现的要点在于每次的开始状态、结束状态要保持一致 例如上述</p>
+<h2 id="GIF演示"><a href="#GIF演示" class="headerlink" title="GIF演示"></a>GIF演示</h2><p><img src="/img/vim%E5%AE%8F%E6%93%8D%E4%BD%9C/001.gif" srcset="/img/loading.gif" lazyload alt="演示"></p>
 
             </div>
             <hr>
@@ -253,11 +277,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/LINUX/">LINUX</a>
+                      <a class="hover-with-bg" href="/tags/VIM/">VIM</a>
                     
-                      <a class="hover-with-bg" href="/tags/DWM/">DWM</a>
-                    
-                      <a class="hover-with-bg" href="/tags/ROFI/">ROFI</a>
+                      <a class="hover-with-bg" href="/tags/NVIM/">NVIM</a>
                     
                   </div>
                 
@@ -274,18 +296,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/06/16/vim%E5%AE%8F%E6%93%8D%E4%BD%9C/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">vim宏操作</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/10/19/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E9%94%AE%E7%9B%98%E6%8E%A7%E5%88%B6%E7%9A%84shell%E8%84%9A%E6%9C%AC/">
-                        <span class="hidden-mobile">写一个可以键盘控制的shell脚本</span>
+                      <a href="/2022/06/16/rofi/">
+                        <span class="hidden-mobile">rofi实现自定义菜单选项和操作、像fzf一样使用rofi</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
