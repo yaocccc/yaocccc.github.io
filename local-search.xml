@@ -4,7 +4,7 @@
   
   
   <entry>
-    <title>rofi骚操作</title>
+    <title>rofi实现自定义菜单选项和操作、像fzf一样使用rofi</title>
     <link href="/2022/06/16/rofi/"/>
     <url>/2022/06/16/rofi/</url>
     
@@ -13,14 +13,18 @@
     
     <categories>
       
-      <category>LINUX DWM ROFI</category>
+      <category>LINUX</category>
       
     </categories>
     
     
     <tags>
       
-      <tag>LINUX DWM ROFI</tag>
+      <tag>LINUX</tag>
+      
+      <tag>DWM</tag>
+      
+      <tag>ROFI</tag>
       
     </tags>
     
