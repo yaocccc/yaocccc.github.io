@@ -38,6 +38,10 @@ _key() {
     pre_hook
     _list
     after_hook
+
+    # 有时会存在pre_hook或after_hook操作了tab或item的情况 需要做一层保护
+    tab=${menu_tabs[$tab_index]}
+    item=${menu_items[$item_index]}
 }
 
 ###############################################
