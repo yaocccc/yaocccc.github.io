@@ -4,6 +4,27 @@
   
   
   <entry>
+    <title>dwm简介和如何安装使用</title>
+    <link href="/2022/07/10/dwm/"/>
+    <url>/2022/07/10/dwm/</url>
+    
+    <content type="html"><![CDATA[<h2 id="DWM"><a href="#DWM" class="headerlink" title="DWM"></a>DWM</h2><h3 id="WHAT"><a href="#WHAT" class="headerlink" title="WHAT"></a>WHAT</h3><p><a href="https://dwm.suckless.org/">dwm</a></p><p>dynamic window manager</p><p>是X上的一个动态窗口管理器</p><h3 id="WHY"><a href="#WHY" class="headerlink" title="WHY"></a>WHY</h3><p>轻、自定义、无限可能性</p><h3 id="HOW"><a href="#HOW" class="headerlink" title="HOW"></a>HOW</h3><ol><li><p>安装xserver环境(如果你未安装图形化环境的话)</p><p> <code>sudo pacman -S xorg-xinit</code></p></li><li><p>克隆源码</p><p> <code>git clone https://git.suckless.org/dwm</code></p></li><li><p>make</p><p> <code>sudo make clean install</code></p></li><li><p>修改 ~/.xinitrc</p><p> <code>exec dwm</code></p></li><li><p>从tty进入 dwm</p><p> <code>startx</code></p></li></ol>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>LINUX</tag>
+      
+      <tag>DWM</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>适合arch linux的qq、微信、企业微信</title>
     <link href="/2022/07/05/arch%E7%9A%84wine%E8%BD%AF%E4%BB%B6/"/>
     <url>/2022/07/05/arch%E7%9A%84wine%E8%BD%AF%E4%BB%B6/</url>
