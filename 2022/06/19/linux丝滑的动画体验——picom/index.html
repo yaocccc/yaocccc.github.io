@@ -161,7 +161,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      150 字
+      147 字
     </span>
   
 
@@ -171,7 +171,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      1
        分钟
     </span>
   
@@ -218,11 +218,11 @@
 <li><a href="#picom">picom</a></li>
 <li><a href="#%E5%AE%89%E8%A3%85">安装</a></li>
 <li><a href="#%E5%90%AF%E5%8A%A8">启动</a></li>
-<li><a href="#%E5%B1%95%E7%A4%BA">展示</a></li>
 </ul>
 <!-- markdown-toc -->
 
-<h2 id="picom"><a href="#picom" class="headerlink" title="picom"></a>picom</h2><p>xserver的窗口效果合成器, fork自 compton</p>
+<h2 id="picom"><a href="#picom" class="headerlink" title="picom"></a>picom</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/bv19T411G7Eq">视频链接</a></p>
+<p>xserver的窗口效果合成器, fork自 compton</p>
 <p>提供了窗口的透明、背景模糊、淡入淡出、圆角、动画等效果</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/yshui/picom">github仓库</a> | <a target="_blank" rel="noopener" href="https://github.com/yaocccc/picom">个人fork版本</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/yaocccc/scripts/blob/master/config/picom.conf">个人自用配置</a></p>
@@ -232,7 +232,6 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd picom<br>git checkout implement-window-animations<br><br>rm -rf build<br>LDFLAGS=&quot;-L/usr/local/lib&quot; CPPFLAGS=&quot;-I/usr/local/include&quot; meson --buildtype=release . build<br>ninja -C build<br>sudo ninja -C build install<br></code></pre></td></tr></table></figure>
 
 <h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p><code>picom --experimental-backends --config ~/scripts/config/picom.conf</code></p>
-<h2 id="展示"><a href="#展示" class="headerlink" title="展示"></a>展示</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/bv19T411G7Eq">视频链接</a></p>
 
             </div>
             <hr>
