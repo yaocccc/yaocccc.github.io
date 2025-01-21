@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yaocc.cc/img/archinstall/001.png">
 <meta property="article:published_time" content="2022-12-28T09:08:30.000Z">
-<meta property="article:modified_time" content="2025-01-21T12:12:11.633Z">
+<meta property="article:modified_time" content="2025-01-21T12:16:17.396Z">
 <meta property="article:author" content="Yaocan Chen">
 <meta property="article:tag" content="LINUX">
 <meta property="article:tag" content="ARCH">
@@ -201,7 +201,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          5.9k 字
+          6k 字
         
       </span>
     
@@ -290,7 +290,7 @@
 <hr>
 <h2 id="中文输入法"><a href="#中文输入法" class="headerlink" title="中文输入法"></a>中文输入法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo pacman -S fcitx5 fcitx5-qt fcitx5-gtk fcitx5-config-qt fcitx5-material-color fcitx5-im fcitx5-rime<br>sudo echo &#x27;<br>GTK_IM_MODULE=fcitx<br>QT_IM_MODULE=fcitx<br>XMODIFIERS=@im=fcitx<br>SDL_IM_MODULE=fcitx<br>GLFW_IM_MODULE=ibus&#x27; &gt;&gt; /etc/environment<br></code></pre></td></tr></table></figure>
 
-<h2 id="触控板轻触"><a href="#触控板轻触" class="headerlink" title="触控板轻触"></a>触控板轻触</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">sudo cp /usr/share/X11/xorg.conf.d/40-libinput.conf /etc/X11/xorg.conf.d<br><br>/etc/X11/xorg.conf.d/40-libinput.conf<br><br># 找到touchpad的配置 添加 `Option &quot;Tapping&quot; &quot;on&quot;`<br><br>Section &quot;InputClass&quot;<br>        Identifier &quot;libinput touchpad catchall&quot;<br>        MatchIsTouchpad &quot;on&quot;<br>        Option &quot;Tapping&quot; &quot;on&quot;<br>        MatchDevicePath &quot;/dev/input/event*&quot;<br>        Driver &quot;libinput&quot;<br>EndSection<br></code></pre></td></tr></table></figure>
+<h2 id="触控板轻触-避免打字时误触-自然滚动"><a href="#触控板轻触-避免打字时误触-自然滚动" class="headerlink" title="触控板轻触 避免打字时误触 自然滚动"></a>触控板轻触 避免打字时误触 自然滚动</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">sudo cp /usr/share/X11/xorg.conf.d/40-libinput.conf /etc/X11/xorg.conf.d<br><br>/etc/X11/xorg.conf.d/40-libinput.conf<br><br># 找到touchpad的配置 添加 `Option &quot;Tapping&quot; &quot;on&quot;`<br><br>Section &quot;InputClass&quot;<br>        Identifier &quot;libinput touchpad catchall&quot;<br>        MatchIsTouchpad &quot;on&quot;<br>        Option &quot;Tapping&quot; &quot;on&quot;<br>        Option &quot;NaturalScrolling&quot; &quot;true&quot;<br>        MatchDevicePath &quot;/dev/input/event*&quot;<br>        Driver &quot;libinput&quot;<br>EndSection<br></code></pre></td></tr></table></figure>
 
 <h2 id="配置系统锁屏和关机时间"><a href="#配置系统锁屏和关机时间" class="headerlink" title="配置系统锁屏和关机时间"></a>配置系统锁屏和关机时间</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">/etc/X11/xorg.conf.d/10-monitor.conf<br><br>Section &quot;ServerLayout&quot;<br>    Identifier &quot;ServerLayout0&quot;<br>    Option &quot;BlankTime&quot;  &quot;10&quot; 	  # 自动锁屏<br>    Option &quot;StandbyTime&quot; &quot;20&quot;   # 关闭屏幕<br>    Option &quot;SuspendTime&quot; &quot;30&quot;   # 挂起<br>    Option &quot;OffTime&quot; &quot;60&quot;       # 关机<br>EndSection<br></code></pre></td></tr></table></figure>
 
