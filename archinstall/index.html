@@ -1,0 +1,690 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yaocan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从磁盘分区到gui配置，本地化等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记录一次archlinux安装和基础配置">
+<meta property="og:url" content="https://yaocc.cc/archinstall/index.html">
+<meta property="og:site_name" content="cc">
+<meta property="og:description" content="从磁盘分区到gui配置，本地化等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yaocc.cc/img/archinstall/001.png">
+<meta property="article:published_time" content="2022-12-28T09:08:30.000Z">
+<meta property="article:modified_time" content="2025-01-21T12:12:11.633Z">
+<meta property="article:author" content="Yaocan Chen">
+<meta property="article:tag" content="LINUX">
+<meta property="article:tag" content="ARCH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaocc.cc/img/archinstall/001.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>记录一次archlinux安装和基础配置 - cc</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yaocc.cc","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 30vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>CC</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="记录一次archlinux安装和基础配置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-12-28 17:08" pubdate>
+          2022年12月28日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          50 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">记录一次archlinux安装和基础配置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="archlinux-安装步骤"><a href="#archlinux-安装步骤" class="headerlink" title="archlinux 安装步骤"></a>archlinux 安装步骤</h1><hr>
+<p>下载镜像制作启动盘 然后进入arch live进行安装系统</p>
+<hr>
+<h2 id="链接wifi"><a href="#链接wifi" class="headerlink" title="链接wifi"></a>链接wifi</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">rfkill unblock [网卡]                        # 软解网卡<br>ip link set [wifi设备] up                    # 启动网卡<br>wpa_passphrase [wifi名称] [wifi密码] &gt; wifi.conf # 写入wifi配置文件<br>wpa_supplicant -c wifi.conf -i &amp;             # 登录wifi<br>dhcpcd &amp;                                     # 动态ip分配<br><span class="hljs-meta prompt_"># </span><span class="language-bash">此时已可以上网 可以用ping baidu.com 验证</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">嫌麻烦可以直接用nmtui连接</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="硬盘分区"><a href="#硬盘分区" class="headerlink" title="硬盘分区"></a>硬盘分区</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">cfdisk /dev/硬盘                             # 使用cfdisk工具分区、格式化、调整大小等<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">以三个盘举例</span> <br><span class="hljs-meta prompt_"># </span><span class="language-bash">  /dev/nvme0n1p1 boot分区</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">  /dev/nvme0n1p2 root分区</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">  /dev/nvme0n1p3 swap分区</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">磁盘格式化以及开启swap</span><br>mkfs.fat -F32 /dev/nvme0n1p1<br>mkfs.ext4 /dev/nvme0n1p2<br>mkswap /dev/nvme0n1p3<br>swapon /dev/nvme0n1p3<br></code></pre></td></tr></table></figure>
+
+<h2 id="安装基础包"><a href="#安装基础包" class="headerlink" title="安装基础包"></a>安装基础包</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">pacman -Sy archlinux-keyring                 # 安装这个可解决证书问题<br>pacstrap /mnt base base-devel linux linux-firmware<br></code></pre></td></tr></table></figure>
+
+<h2 id="制作grub引导"><a href="#制作grub引导" class="headerlink" title="制作grub引导"></a>制作grub引导</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir /mnt/boot<br>mount /dev/nvme0n1p1 /mnt/boot<br>mount /dev/nvme0n1p2 /mnt<br>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab<br>arch-chroot /mnt<br>pacman -S grub efibootmgr amd-ucode          # 如果是intel就装intel-ucode<br>mkdir /boot/grub<br>grub-mkconfig &gt; /boot/grub/grub.cfg<br>grub-install --target=x86_64-efi --efi-directory=/boot<br><br>事后可设置 /etc/default/grub 中 可提升启动速度<br>GRUB_CMDLINE_LINUX_DEFAULT=&quot;loglevel=3 nowatchdog&quot;<br></code></pre></td></tr></table></figure>
+
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">passwd<br>useradd -m -G wheel [用户名]<br>passwd [用户名]<br>pacman -S netmanager dhcpcd<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">本地化 一些自定义设置</span><br>vim /etc/locale.gen -&gt; zh_CN.UTF-8 UTF-8<br>locale-gen<br>vim /etc/locale.conf -&gt; LANG=zh_CN.UTF-8<br>timedatectl set-timezone Asia/Shanghai<br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>此时已可以重启正常进入系统tty了</p>
+<hr>
+<h2 id="配置archcn-安装yay等"><a href="#配置archcn-安装yay等" class="headerlink" title="配置archcn 安装yay等"></a>配置archcn 安装yay等</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /etc/pacman.conf 尾部添加<br><br>[archlinuxcn]<br>SigLevel = Never<br>Server = https://mirrors.ustc.edu.cn/$repo/$arch<br><br>顺便开启<br>[multilib]<br>Include = /etc/pacman.d/mirrorlist<br><br>sudo pacman -Syyu<br>sudo pacman -S yay<br></code></pre></td></tr></table></figure>
+
+<h2 id="安装gui"><a href="#安装gui" class="headerlink" title="安装gui"></a>安装gui</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"># 安装git和xorg和字体<br>yay -S git<br>yay -S xorg<br>yay -S wqy-microhei<br>yay -S wps-office-mui-zh-cn<br>yay -S ttf-wps-fonts<br>yay -S nerd-fonts-jetbrains-mono<br>yay -S ttf-material-design-icons<br>yay -S ttf-joypixels<br>yay -S ttf-dejavu<br><br>mkdir ~/workspace<br>cd ~/workspace<br>git clone https://github.com/yaocccc/dwm<br>git clone https://github.com/yaocccc/st<br>cd dwm &amp;&amp; sudo make install clean<br>cd st &amp;&amp; sudo make install clean<br><br>echo exec dwm &gt; ~/.xinitrc<br>startx # 进入系统<br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>此时已可以重启正常进入系统gui了</p>
+<p>接下来设置一些日常使用的内容</p>
+<hr>
+<h2 id="中文输入法"><a href="#中文输入法" class="headerlink" title="中文输入法"></a>中文输入法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo pacman -S fcitx5 fcitx5-qt fcitx5-gtk fcitx5-config-qt fcitx5-material-color fcitx5-im fcitx5-rime<br>sudo echo &#x27;<br>GTK_IM_MODULE=fcitx<br>QT_IM_MODULE=fcitx<br>XMODIFIERS=@im=fcitx<br>SDL_IM_MODULE=fcitx<br>GLFW_IM_MODULE=ibus&#x27; &gt;&gt; /etc/environment<br></code></pre></td></tr></table></figure>
+
+<h2 id="触控板轻触"><a href="#触控板轻触" class="headerlink" title="触控板轻触"></a>触控板轻触</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">sudo cp /usr/share/X11/xorg.conf.d/40-libinput.conf /etc/X11/xorg.conf.d<br><br>/etc/X11/xorg.conf.d/40-libinput.conf<br><br># 找到touchpad的配置 添加 `Option &quot;Tapping&quot; &quot;on&quot;`<br><br>Section &quot;InputClass&quot;<br>        Identifier &quot;libinput touchpad catchall&quot;<br>        MatchIsTouchpad &quot;on&quot;<br>        Option &quot;Tapping&quot; &quot;on&quot;<br>        MatchDevicePath &quot;/dev/input/event*&quot;<br>        Driver &quot;libinput&quot;<br>EndSection<br></code></pre></td></tr></table></figure>
+
+<h2 id="配置系统锁屏和关机时间"><a href="#配置系统锁屏和关机时间" class="headerlink" title="配置系统锁屏和关机时间"></a>配置系统锁屏和关机时间</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">/etc/X11/xorg.conf.d/10-monitor.conf<br><br>Section &quot;ServerLayout&quot;<br>    Identifier &quot;ServerLayout0&quot;<br>    Option &quot;BlankTime&quot;  &quot;10&quot; 	  # 自动锁屏<br>    Option &quot;StandbyTime&quot; &quot;20&quot;   # 关闭屏幕<br>    Option &quot;SuspendTime&quot; &quot;30&quot;   # 挂起<br>    Option &quot;OffTime&quot; &quot;60&quot;       # 关机<br>EndSection<br></code></pre></td></tr></table></figure>
+
+<h2 id="音频和蓝牙"><a href="#音频和蓝牙" class="headerlink" title="音频和蓝牙"></a>音频和蓝牙</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo pacman -S pipewire-pulse<br>sudo pacman -S pavucontrol<br>sudo pacman -S bluez bluez-utils bluedevil # bluedevil 为gui蓝牙管理<br>pactl load-module module-bluetooth-discover<br><br>sudo vim /etc/bluetooth/main.conf<br>FastConnectable=true<br>AutoEnable=true<br></code></pre></td></tr></table></figure>
+
+<h2 id="SSR"><a href="#SSR" class="headerlink" title="SSR"></a>SSR</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">run v2raya</span><br>docker run -d \<br>  --privileged \<br>  --network=host \<br>  --name v2raya \<br>  -e V2RAYA_ADDRESS=0.0.0.0:2017 \<br>  -v /lib/modules:/lib/modules \<br>  -v /etc/resolv.conf:/etc/resolv.conf \<br>  -v /etc/v2raya:/etc/v2raya \<br>  mzz2017/v2raya<br></code></pre></td></tr></table></figure>
+
+<h2 id="tty免登录"><a href="#tty免登录" class="headerlink" title="tty免登录"></a>tty免登录</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /etc/systemd/system/getty.target.wants/getty@tty1.service<br><br>update<br>  ExecStart=-/sbin/agetty -o &#x27;-p -f [用户名]&#x27; -n -a chenyc --noclear %I $TERM<br><br>sudo免密 加到 visudo 添加到尾部<br>[用户名] ALL=(ALL:ALL) NOPASSWD: ALL<br><br>用户提权<br>yay -S polkit<br></code></pre></td></tr></table></figure>
+
+<h2 id="开启hibernate"><a href="#开启hibernate" class="headerlink" title="开启hibernate"></a>开启hibernate</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1. 确保已经有swap<br>2. /etc/default/grub, GRUB_CMDLINE_LINUX_DEFAULT 添加 resume=/dev/nvme0n1p3<br>3. /etc/mkinitcpio.conf, HOOKS添加resume，resume放在udev之后，如果有lvm，放在lvm之后<br>4. /etc/systemd/logind.conf, 按下电源键进入休眠 合盖挂起 半小时后休眠<br>  HandlePowerKey=hibernate<br>  HandleLidSwitch=suspend-then-hibernate<br>  HandleLidSwitchDocked=suspend-then-hibernate<br>  HibernateDelaySec=30min<br>5. sudo grub-mkconfig -o /boot/grub/grub.cfg<br>6. sudo mkinitcpio -p linux<br></code></pre></td></tr></table></figure>
+
+<h2 id="永久去除蜂鸣器声音"><a href="#永久去除蜂鸣器声音" class="headerlink" title="永久去除蜂鸣器声音"></a>永久去除蜂鸣器声音</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">sudo su<br>mkdir -p /etc/rc.d<br>echo &quot;rmmod pcspkr&quot; &gt;&gt; /etc/rc.d/rc.local<br>chmod  +x /etc/rc.d/rc.local<br></code></pre></td></tr></table></figure>
+
+<h2 id="时间同步"><a href="#时间同步" class="headerlink" title="时间同步"></a>时间同步</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">sudo pacman -S ntp<br>sudo ntpdate ntp.aliyun.com<br>sudo hwclock -w<br></code></pre></td></tr></table></figure>
+
+<h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs shell">ubuntu升级nvim<br>apt-add-repository ppa:neovim-ppa/unstable<br>nodejs:<br>  git clone https://github.com/nvm-sh/nvm.git .nvm<br>  nvm install 17.1.0<br>golang:<br>  官网下载tar包，配置 GOROOT GOBIN等<br>docker:<br>  yay -S docker<br>  sudo vi /etc/docker/daemon.json<br>  &#123;<br>    &quot;registry-mirrors&quot;: [&quot;https://registry.docker-cn.com&quot;]<br>  &#125;<br>  sudo systemctl daemon-reload<br>  sudo systemctl start docker<br>  sudo systemctl enable docker<br>  sudo docker pull redis<br>  sudo docker pull mysql<br>  sudo docker pull docker.elastic.co/elasticsearch/elasticsearch:7.3.0<br>  sudo docker pull rabbitmq:3.7.7-management<br>  sudo docker pull mongo<br>  sudo docker network create esnet<br>  sudo docker run -d -p 9200:9200 -p 9300:9300 --name esApp --network esnet -e &quot;discovery.type=single-node&quot; bdaab402b220<br>  sudo docker run -d -p 5672:5672 -p 15672:15672 --name rabbitmqApp -v ~/.data/rabbitmq:/var/lib/rabbitmq --hostname myRabbit 2888deb59dfc<br>  sudo docker run -d -p 27017:27017 --name mongoApp mongo<br>  sudo docker run -d --network=host --name redisApp redis --requirepass 123456<br>  sudo docker run -d --network=host --name mysqlApp -e MYSQL_ROOT_PASSWORD=123456 mysql<br>  mysql -h 172.17.0.1 -u root -p123456<br>  ALTER USER &#x27;root&#x27;@&#x27;%&#x27; IDENTIFIED WITH mysql_native_password BY &#x27;123456&#x27;;<br>  FLUSH PRIVILEGES;<br><br>  sudo docker run --network=host --name mysqlApp \<br>    -v /usr/local/docker/mysql/conf:/etc/mysql \<br>    -v /usr/local/docker/mysql/logs:/var/log/mysql \<br>    -v /usr/local/docker/mysql/data:/var/lib/mysql \<br>    -e MYSQL_ROOT_PASSWORD=123456 \<br>    -d mysql:5.7<br></code></pre></td></tr></table></figure>
+
+<h2 id="日常软件"><a href="#日常软件" class="headerlink" title="日常软件"></a>日常软件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">yay -S lxappearance              # gui设置<br>yay -S paper-gtk-theme-git       # gtk主题<br>yay -S pavucontrol               # 音频设置<br>yay -S breeze-icons              # 图标<br>yay -S rofi                      # 菜单<br>yay -S flameshot                 # 截图软件<br>yay -S google-chrome wyeb-git    # 浏览器             <br>yay -S byzanz                    # gif截图依赖<br>yay -S wps-office-cn             # wps<br>yay -S libnotify dunst           # 通知 可使用 dunst -b 命令 启动通知服务<br>yay -S xorg-xsetroot             # dwm设置状态栏<br>yay -S xf86-input-synaptics      # 触控板<br>yay -S network-manager-applet    # 网络托盘<br>yay -S amf-amdgpu-pro            # amd gpu 驱动<br>yay -S obs-studio-amf            # obs for amd_gpu<br>yay -S mpc mpd ncmpcpp           # tui music player<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/LINUX/">#LINUX</a>
+      
+        <a href="/tags/ARCH/">#ARCH</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-4">
+    <div style="float:right">
+      <img src="https://github.com/yaocccc/yaocccc/raw/master/qr.png" srcset="/img/loading.gif" lazyload style="height: 110px !important;width: 110px !important;">
+    </div>
+    <div class="license-title">
+      <div>记录一次archlinux安装和基础配置</div>
+      <div>https://yaocc.cc/archinstall/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yaocan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月28日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/capslocktoesc/" title="linux下将capslock键修改为esc">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">linux下将capslock键修改为esc</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/packernvim/" title="基于lua的nvim插件管理工具 packer.nvim">
+                        <span class="hidden-mobile">基于lua的nvim插件管理工具 packer.nvim</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'yaocccc/utterances');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/yaocccc" target="_blank" rel="nofollow noopener"><span>yaocccc</span></a> <div style="font-size: 0.85rem; margin-top:10px"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

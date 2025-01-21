@@ -1,0 +1,678 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yaocan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="VIM多光标插件 —— vim-visual-multi 的配置和使用，以及日常工作中的应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VIM多光标插件——效率MAX">
+<meta property="og:url" content="https://yaocc.cc/vimmulticursor/index.html">
+<meta property="og:site_name" content="cc">
+<meta property="og:description" content="VIM多光标插件 —— vim-visual-multi 的配置和使用，以及日常工作中的应用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yaocc.cc/img/vim%E5%A4%9A%E5%85%89%E6%A0%87%E6%8F%92%E4%BB%B6--%E6%95%88%E7%8E%87MAX/001.gif">
+<meta property="og:image" content="https://yaocc.cc/img/vim%E5%A4%9A%E5%85%89%E6%A0%87%E6%8F%92%E4%BB%B6--%E6%95%88%E7%8E%87MAX/002.gif">
+<meta property="og:image" content="https://yaocc.cc/img/vim%E5%A4%9A%E5%85%89%E6%A0%87%E6%8F%92%E4%BB%B6--%E6%95%88%E7%8E%87MAX/003.gif">
+<meta property="article:published_time" content="2021-05-17T15:19:57.000Z">
+<meta property="article:modified_time" content="2025-01-21T12:09:53.113Z">
+<meta property="article:author" content="Yaocan Chen">
+<meta property="article:tag" content="VIM">
+<meta property="article:tag" content="NVIM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yaocc.cc/img/vim%E5%A4%9A%E5%85%89%E6%A0%87%E6%8F%92%E4%BB%B6--%E6%95%88%E7%8E%87MAX/001.gif">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>VIM多光标插件——效率MAX - cc</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yaocc.cc","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 30vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>CC</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="VIM多光标插件——效率MAX"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-05-17 23:19" pubdate>
+          2021年5月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          34 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">VIM多光标插件——效率MAX</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <!-- markdown-toc GFM -->
+
+<ul>
+<li><a href="#%E6%8F%92%E4%BB%B6%E7%AE%80%E4%BB%8B-mg979vim-visual-multi">插件简介 mg979&#x2F;vim-visual-multi</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85">安装</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE">配置</a></li>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">基本概念</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B">使用案例</a></li>
+<li><a href="#ps">PS</a></li>
+</ul>
+<!-- markdown-toc -->
+
+<h2 id="插件简介-mg979-x2F-vim-visual-multi"><a href="#插件简介-mg979-x2F-vim-visual-multi" class="headerlink" title="插件简介 mg979&#x2F;vim-visual-multi"></a>插件简介 <a target="_blank" rel="noopener" href="https://github.com/mg979/vim-visual-multi">mg979&#x2F;vim-visual-multi</a></h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1uF411c7Ro/">vim宏操作和多光标插件</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">VIM多光标插件，提供vim/nvim快速操作多光标编辑的能力<br>本POST会简单介绍 其 安装、配置、日常使用的过程。<br></code></pre></td></tr></table></figure>
+
+<p>顺便在这里附上我自己的nvim配置仓库地址 <a target="_blank" rel="noopener" href="https://github.com/yaocccc/nvim">yaocccc&#x2F;nvim</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">推荐使用vim-plug安装<br><br>Plug &#x27;mg979/vim-visual-multi&#x27;, &#123;&#x27;branch&#x27;: &#x27;master&#x27;&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs vimrc">&quot; 贴上本人的配置<br>    let g:VM_theme                      = &#x27;ocean&#x27;<br>    let g:VM_highlight_matches          = &#x27;underline&#x27;<br>    let g:VM_maps                       = &#123;&#125;<br>    let g:VM_maps[&#x27;Find Under&#x27;]         = &#x27;&lt;C-n&gt;&#x27;<br>    let g:VM_maps[&#x27;Find Subword Under&#x27;] = &#x27;&lt;C-n&gt;&#x27;<br>    let g:VM_maps[&#x27;Select All&#x27;]         = &#x27;&lt;C-d&gt;&#x27;<br>    let g:VM_maps[&#x27;Select h&#x27;]           = &#x27;&lt;C-Left&gt;&#x27;<br>    let g:VM_maps[&#x27;Select l&#x27;]           = &#x27;&lt;C-Right&gt;&#x27;<br>    let g:VM_maps[&#x27;Add Cursor Up&#x27;]      = &#x27;&lt;C-Up&gt;&#x27;<br>    let g:VM_maps[&#x27;Add Cursor Down&#x27;]    = &#x27;&lt;C-Down&gt;&#x27;<br>    let g:VM_maps[&#x27;Add Cursor At Pos&#x27;]  = &#x27;&lt;C-x&gt;&#x27;<br>    let g:VM_maps[&#x27;Add Cursor At Word&#x27;] = &#x27;&lt;C-w&gt;&#x27;<br>    let g:VM_maps[&#x27;Remove Region&#x27;]      = &#x27;q&#x27;<br><br>&quot; 从上至下的意义:<br>    &quot; [&#x27;Find Under&#x27;]          -&gt; 选中光标下的词(ctrl+n继续向下选中相同文本)<br>    &quot; [&#x27;Find Subword Under&#x27;]  -&gt; 选中光标下的词(ctrl+n继续向下选中相同文本)<br>    &quot; [&#x27;Select All&#x27;]          -&gt; 选中文件中所有光标下的词<br>    &quot; [&#x27;Select h&#x27;]            -&gt; 从光标往左选中文本(ctrl+n继续向下选中相同文本)<br>    &quot; [&#x27;Select l&#x27;]            -&gt; 从光标往右选中文本(ctrl+n继续向下选中相同文本)<br>    &quot; [&#x27;Add Cursor Up&#x27;]       -&gt; 向上添加一个光标(原光标+上光标 继续使用则继续添加)<br>    &quot; [&#x27;Add Cursor Down&#x27;]     -&gt; 向下添加一个光标(原光标+下光标 继续使用则继续添加)<br>    &quot; [&#x27;Add Cursor At Pos&#x27;]   -&gt; 将当前光标添加入多光标列表中<br>    &quot; [&#x27;Add Cursor At Word&#x27;]  -&gt; 将当前光标所在词的词首加上多光标列表中<br>    &quot; [&#x27;Remove Region&#x27;]       -&gt; 移除当前光标<br></code></pre></td></tr></table></figure>
+
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><strong>!!!重要!!!</strong><br><strong>!!!重要!!!</strong><br><strong>!!!重要!!!</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">简单来说该插件提供三种模式:<br>  多光标 normal 模式<br>  多光标 visual 模式<br>  多光标 insert 模式<br><br>可以对应vim的三模式<br>如何切换:<br>  normal &lt;-&gt; visual 模式互相转换: Tab<br>  normal --&gt; insert 进入插入模式: i、a、c等 和 vim原生的按键是一样的<br>  insert --&gt; normal 返回普通模式: Esc<br><br>normal模式 可以使用 hjkl w e b f t $ ^ 0 等等按键来移动 多光标中的全部光标(不可以使用上下左右 PS: 上下左右可以用来移动原光标)<br>visual模式 可以使用 hjkl w e b f t $ ^ 0 等等按键来选中 多光标中的全部光标(不可以使用上下左右 PS: 上下左右可以用来移动原光标)<br>insert模式 可以使用 上下左右 等等按键来移动 多光标中的全部光标<br><br>如何从正常VIM模式中进入多光标模式<br>  1: VIM处于normal模式<br>  2: 用以下快捷键即可<br>    [&#x27;Find Under&#x27;]          -&gt; 选中光标下的词(ctrl+n继续向下选中相同文本)<br>    [&#x27;Find Subword Under&#x27;]  -&gt; 选中光标下的词(ctrl+n继续向下选中相同文本)<br>    [&#x27;Select All&#x27;]          -&gt; 选中文件中所有光标下的词<br>    [&#x27;Select h&#x27;]            -&gt; 从光标往左选中文本(ctrl+n继续向下选中相同文本)<br>    [&#x27;Select l&#x27;]            -&gt; 从光标往右选中文本(ctrl+n继续向下选中相同文本)<br>    [&#x27;Add Cursor Up&#x27;]       -&gt; 向上添加一个光标(原光标+上光标 继续使用则继续添加)<br>    [&#x27;Add Cursor Down&#x27;]     -&gt; 向下添加一个光标(原光标+下光标 继续使用则继续添加)<br>    [&#x27;Add Cursor At Pos&#x27;]   -&gt; 将当前光标添加入多光标列表中<br>    [&#x27;Add Cursor At Word&#x27;]  -&gt; 将当前光标所在词的词首加上多光标列表中<br><br>如何从多光标模式中退出<br>  一股脑Esc就对了<br></code></pre></td></tr></table></figure>
+
+<h2 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">当前有以下文本，试完成以下案例 原始光标初始位置在第1行的l位置<br><br>let aa = 1;<br>let bbb = 2;<br>let cccc = 3;<br>let ddddd = 4;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">案例1: 将 全部let 改成 const<br>案例重点: 如何添加多光标<br><br>方案1: ctrl+d c const<br>  1: ctrl+d 选中文件中所有光标下的词<br>  2: c 从visual模式进入插入模式，并变更当前选中的文本<br>方案2: ctrl+n ctrl+n ctrl+n ctrl+n c const<br>  1: ctrl+n 选中光标下的词 * 4次<br>  2: c 从visual模式进入插入模式，并变更当前选中的文本<br>方案3: ctrl+下 ctrl+下 ctrl+下 xxx i const<br>  1: ctrl+下 * 3次 将共计4个l位置的光标添加进多光标列表<br>  2: xxx删除 i进入插入模式<br>...<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/vim%E5%A4%9A%E5%85%89%E6%A0%87%E6%8F%92%E4%BB%B6--%E6%95%88%E7%8E%87MAX/001.gif" srcset="/img/loading.gif" lazyload alt="案例1"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">案例2: 将 124行的 let 改成 const<br>案例重点: 如何取消/跳过某光标<br><br>方案1: ctrl+d 下下q c const<br>  1: ctrl+d 选中文件中所有光标下的词<br>  2: 下下 移动原始光标到第三行 q 取消当前光标<br>  3: c 从visual模式进入插入模式，并变更当前选中的文本<br>方案2: ctrl+n ctrl+n 下下 ctrl+n c const<br>  1: ctrl+n 选中光标下的词 * 2次<br>  2: 下下 移动原始光标到第四行<br>  3: ctrl+n 选中光标下的词<br>  4: c 从visual模式进入插入模式，并变更当前选中的文本<br>方案3: ctrl+下 下下 ctrl+x xxx i const<br>  1: ctrl+下 将共计2个l位置的光标添加进多光标列表<br>  2: 下下 移动原始光标到第四行<br>  3: ctrl+x 添加当前位置光标进多光标列表<br>  4: xxx删除 i进入插入模式<br>...<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/vim%E5%A4%9A%E5%85%89%E6%A0%87%E6%8F%92%E4%BB%B6--%E6%95%88%E7%8E%87MAX/002.gif" srcset="/img/loading.gif" lazyload alt="案例2"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">案例3: 将文本内容改成<br>案例重点: 多光标下normal和visual的切换 光标的跳转等<br>  let aa = 1 * aa;<br>  let bbb = 2 * bbb;<br>  let cccc = 3 * cccc;<br>  let ddddd = 4 * ddddd;<br><br>方案1: ctrl+d tab w tab e y tab ww a * 空格 esc p<br>  1: ctrl+d 选中文件中所有光标下的词<br>  2: tab 从visual模式转换到normal模式<br>  3: w 跳到 下个词首(aa、bbb等所在词)<br>  4: tab 从normal模式转换到visual模式<br>  5: e选中到词尾 y复制选中部分<br>  6: tab 从visual模式转换到normal模式<br>  7: ww a ... 光标跳转并插入 * 空格<br>  8: esc 从 insert模式回归到normal<br>  9: p粘贴刚刚选中的多个词<br>方案2: ctrl+下 ctrl+下 ctrl+下 w tab e y tab ww a * 空格 esc p<br>  1: ctrl+下 * 3次 将共计4个l位置的光标添加进多光标列表<br>  2: w 跳到 下个词首(aa、bbb等所在词)<br>  3: tab 从normal模式转换到visual模式<br>  4: e选中到词尾 y复制选中部分<br>  5: tab 从visual模式转换到normal模式<br>  6: ww a ... 光标跳转并插入 * 空格<br>  7: esc 从 insert模式回归到normal<br>  8: p粘贴刚刚选中的多个词<br>...<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/vim%E5%A4%9A%E5%85%89%E6%A0%87%E6%8F%92%E4%BB%B6--%E6%95%88%E7%8E%87MAX/003.gif" srcset="/img/loading.gif" lazyload alt="案例3"></p>
+<h2 id="PS"><a href="#PS" class="headerlink" title="PS"></a>PS</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">建议将列出的按键配置都自己试一遍<br>该插件还有不少其他用法，例如:<br>  自定义搜索文本跳转<br>  多行对齐<br>  ...<br><br>不过我不会 有需要进阶的同好可以看原仓库说明<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/mg979/vim-visual-multi">mg979&#x2F;vim-visual-multi</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/VIM/">#VIM</a>
+      
+        <a href="/tags/NVIM/">#NVIM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-4">
+    <div style="float:right">
+      <img src="https://github.com/yaocccc/yaocccc/raw/master/qr.png" srcset="/img/loading.gif" lazyload style="height: 110px !important;width: 110px !important;">
+    </div>
+    <div class="license-title">
+      <div>VIM多光标插件——效率MAX</div>
+      <div>https://yaocc.cc/vimmulticursor/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Yaocan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年5月17日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/bitcontrol/" title="如何利用位运算做逻辑控制">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何利用位运算做逻辑控制</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'yaocccc/utterances');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://github.com" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/yaocccc" target="_blank" rel="nofollow noopener"><span>yaocccc</span></a> <div style="font-size: 0.85rem; margin-top:10px"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
